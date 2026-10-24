@@ -14,3 +14,7 @@ Thumbs.db
 *.db
 *_old.py
 *_Old.py
+
+/create_processor.py
+/scripts/sn_test.py
+/scripts/diag_finding.py
