@@ -1,0 +1,16 @@
+﻿# ignore local only artifacts
+.venv/
+__pycache__/
+*.pyc
+data/
+*.docx
+*.pdf
+.env
+*.env
+.DS_Store
+Thumbs.db
+
+.adk/
+*.db
+*_old.py
+*_Old.py

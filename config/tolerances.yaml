@@ -1,0 +1,23 @@
+# Tolerance and approval configuration for the invoice exception accelerator.
+# Lives in config, never hard coded, so a controller tunes it without a redeploy.
+# The frozen key records which config version scored each run.
+config_version: v1
+
+price_variance:
+  pct: 0.05           # 5 percent band, checked on the unit price
+  abs_upper: 100.00   # absolute ceiling on the LINE value delta (qty times unit delta); flags even if pct passes
+  abs_floor: 15.00    # line value delta at or below this is ignored, even if pct trips
+  rule: flag_if_pct_outside_band_or_line_value_delta_above_ceiling
+  abs_basis: line_value_delta   # SAP style: tolerance evaluates value differences, not unit prices
+
+quantity:
+  over_receipt_allowed: 0   # any quantity above goods receipt flags
+
+tax:
+  rounding_abs: 1.00   # computed vs stated tax within this passes
+
+approval:
+  second_approver_at: 25000.00   # invoice total at or above needs a second approver
+
+currency:
+  must_match_po: true   # invoice currency must equal the purchase order currency
