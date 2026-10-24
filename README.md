@@ -19,27 +19,7 @@ payment costs money, so the system is built to fail toward a hold, never toward 
 
 ## Architecture
 
-```mermaid
-flowchart TB
-    PDF["Invoice PDF"] --> DAI["Document AI<br/>Invoice Parser"]
-    DAI --> GATE{"confidence<br/>gate 0.80"}
-    GATE -->|low| HR["human review<br/>of fields"]
-    GATE -->|ok| MATCH["deterministic matcher<br/>three way match, tolerances"]
-    BQ["tables<br/>PO, GR, vendor master"] --> MATCH
-    HR --> MATCH
-    MATCH -->|exception| QUEUE["flagged queue"]
-    MATCH -->|clean| SCREEN{"deterministic screen<br/>injection, policy claim"}
-    SCREEN -->|trips| QUEUE
-    SCREEN -->|clean| APPROVE["approval gate<br/>separation of duties"]
-    QUEUE --> AGENT["investigation agent<br/>Gemini, read only tools"]
-    POL["Vertex AI Search<br/>versioned AP policy"] --> AGENT
-    AGENT --> GUARD{"code guardrails<br/>closed action set, fail closed"}
-    GUARD --> DISPATCH["dispatcher over MCP<br/>ServiceNow incident, notification<br/>identity ap.ops.bot"]
-    APPROVE --> EXEC["idempotent executor<br/>simulated ERP ledger"]
-    EXEC --> VERIFY["post execution verification<br/>independent re read"]
-    ARMOR["Model Armor<br/>managed input guard"] -.-> SCREEN
-    AUDIT["append only audit trail<br/>correlation id per invoice"] -.-> VERIFY
-```
+![Invoice Exception Accelerator architecture](architecture.png)
 
 ## Design principles
 
